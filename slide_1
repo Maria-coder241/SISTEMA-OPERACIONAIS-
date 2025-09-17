@@ -1,0 +1,54 @@
+o que é um sistema operacional?
+
+Um sistema operacional é um conjunto de programas que gerencia os recursos do computador, como processador, memória principal, discos, impressoras e outros dispositivos de entrada/saída, permitindo a execução de programas e a interação entre usuário e hardware.
+
+Sistema operacional como um gerador de recursos
+permite rodar vários programas ao mesmo tempo
+cuida e protege a memória,os dispositivos(teclado, mouse,impressora,disco,etc) e outros recursos 
+faz a divisão dos recursos em duas formas: 
+no tempo- cada programa usa o recurso por um período(CPU dividida entre processos)
+            no espaço- cada programa ocupa uma parte do recurso(memória dividida entre    programas)
+
+Componentes principais de um computador
+processador
+memória 
+dispositivo de entrada e saída 
+barramento
+
+Componente principais do processador
+registradores
+unidade de controle
+unidade logica e aritmetica 
+barramento interno 
+
+Conceitos de sistema operacionais 
+processos
+espaço de endereço
+arquivo
+entrada/saída
+segurança
+o interpretador de comandos(shell)
+
+chamadas de sistema para o gerenciamento do processo 
+é a forma que um processo avisa que o sistema operacional precisa de de algo do SO
+um processo nao sabe salvar no disco e imprimir, pede ajuda ao SO
+
+
+
+
+
+
+FORK→ cria um processo filho.
+ Retorna 0 no filho, PID do filho no pai, -1 se erro.
+
+
+GETPID()→ retorna o PID do processo atual.
+
+
+S→ substitui a imagem do núcleo de um processo.
+
+
+EXIT→ encerra o processo com um código de saída.
+
+
+SLIDE 2- PT 1 
