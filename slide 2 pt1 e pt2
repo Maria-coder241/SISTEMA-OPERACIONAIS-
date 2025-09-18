@@ -1,0 +1,67 @@
+Slide 2 – Parte 2 (Comunicação com Sockets em C)
+🔹 O que é um Socket
+Ponto de comunicação entre dois processos (local ou pela rede).
+
+
+Base para comunicação cliente-servidor.
+
+
+Funciona com protocolos:
+
+
+TCP → confiável, orientado à conexão.
+
+
+UDP → rápido, mas sem garantia de entrega.
+
+
+
+Principais Funções em C (Winsock – Windows)
+WSAStartup() → inicializa biblioteca.
+
+
+WSACleanup() → finaliza biblioteca.
+
+
+socket() → cria um socket.
+
+
+closesocket() → fecha o socket.
+
+
+bind() → associa IP/porta ao socket.
+
+
+listen() → coloca servidor em modo de escuta.
+
+
+accept() → aceita conexão do cliente.
+
+
+connect() → conecta cliente ao servidor.
+
+
+send() / recv() → enviar/receber dados.
+
+
+sendto() / recvfrom() → usado em UDP.
+
+
+
+ Fluxo Cliente-Servidor
+Servidor: inicializa Winsock → cria socket → bind (IP/porta) → listen → accept → troca dados → fecha.
+ Cliente: inicializa Winsock → cria socket → connect (ao servidor) → send/recv → fecha.
+
+ Exemplo prático – Cliente simples
+SOCKET clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+connect(clientSocket, ...);
+send(clientSocket, "Ola", 3, 0);
+closesocket(clientSocket);
+
+ Exemplo prático – Servidor simples
+SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+bind(sock, ...);
+listen(sock, SOMAXCONN);
+SOCKET client = accept(sock, NULL, NULL);
+recv(client, buffer, sizeof(buffer), 0);
+closesocket(sock);
