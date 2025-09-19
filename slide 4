@@ -1,0 +1,188 @@
+
+1. Condições para Armazenamento a Longo Prazo
+Deve guardar grande volume de informação.
+
+
+Dados precisam sobreviver ao término do processo.
+
+
+Múltiplos processos devem acessar ao mesmo tempo.
+
+
+2. Arquivos
+Disco = sequência linear de blocos.
+
+
+Questões:
+
+
+Como encontrar informação?
+
+
+Como proteger dados?
+
+
+Como saber se blocos estão livres?
+
+
+Funções do SO: localizar, proteger, controlar espaço livre.
+
+
+Estrutura
+Nomeação → nome único para identificar.
+
+
+Estrutura → sequência de bytes, registros, árvore etc.
+
+
+Tipos → texto, binário, executável.
+
+
+Atributos → nome, tamanho, dono, permissões, datas.
+
+
+Operações (chamadas de sistema)
+Create, Delete → criar/apagar arquivo.
+
+
+Open, Close → abrir/fechar arquivo.
+
+
+Read, Write → ler/escrever.
+
+
+Append → anexar.
+
+
+Seek → mover ponteiro.
+
+
+Get/Set Attributes → consultar ou alterar atributos.
+
+
+Rename → renomear.
+
+
+🔹 Exemplo prático (Unix/Linux)
+# criar arquivo
+touch arquivo.txt
+# escrever no arquivo
+echo "teste" > arquivo.txt
+# ler arquivo
+cat arquivo.txt
+
+3. Diretórios
+Hierárquicos → organizam arquivos em árvore.
+
+
+Nomes de caminho: absoluto (/usr/bin/ls) e relativo (../pasta/arquivo).
+
+
+Operações (chamadas de sistema)
+Create, Delete → criar/apagar diretório.
+
+
+Opendir, Closedir → abrir/fechar.
+
+
+Readdir → listar arquivos.
+
+
+Rename → renomear.
+
+
+Link → criar link.
+
+
+🔹 Exemplo prático (Linux)
+mkdir docs       # cria diretório
+ls docs          # lista
+rmdir docs       # remove diretório vazio
+
+
+4. Implementação de Sistemas de Arquivos
+Perguntas principais:
+Como organizar arquivos no disco?
+
+
+Como controlar espaços livres/ocupados?
+
+
+Como implementar diretórios?
+
+
+Como lidar com arquivos compartilhados?
+
+
+Métodos de alocação
+Contígua
+
+
+Arquivo ocupa blocos seguidos.
+
+
+Fácil leitura, mas gera fragmentação interna e externa.
+
+
+Lista encadeada
+
+
+Cada bloco aponta para o próximo.
+
+
+Sem fragmentação externa, mas leitura é lenta.
+
+
+Lista encadeada com tabela em memória (FAT)
+
+
+Tabela na RAM armazena ponteiros.
+
+
+Usada no MS-DOS.
+
+
+Problema: pode ficar muito grande.
+
+
+I-nodes (index nodes)
+
+
+Estrutura que guarda atributos e endereços de blocos.
+
+
+Só precisa estar em memória se o arquivo estiver aberto.
+
+
+Usado em Unix/Linux.
+
+
+🔹 Exemplo prático (Linux – verificar inode)
+ls -i arquivo.txt   # mostra número do i-node
+
+
+5. Arquivos Compartilhados
+Podem ser usados por múltiplos usuários/processos.
+
+
+Necessária exclusão mútua para evitar conflitos.
+
+
+
+6. Exemplos de Sistemas de Arquivos
+FAT (File Allocation Table) → antigo Windows/MS-DOS.
+
+
+NTFS (New Technology File System) → Windows moderno (suporta criptografia, permissões).
+
+
+ext / ext2 / ext3 / ext4 → Linux.
+
+
+HFS+ → MacOS antigo.
+
+
+NFS (Network File System) → permite acesso remoto em rede.
+
+
+BFS, EFS → usados em sistemas específicos.
