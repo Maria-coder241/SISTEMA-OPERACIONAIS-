@@ -1,0 +1,453 @@
+🔹 Deadlocks
+Definição: Situação em que um conjunto de processos fica permanentemente bloqueado, esperando por recursos que nunca serão liberados.
+
+
+Exemplos: Impressora e gravador disputados por processos diferentes, banco de dados bloqueado por múltiplos acessos.
+
+
+
+🔹 Recursos
+Sequência de uso: requisitar → usar → liberar.
+
+
+Tipos:
+
+
+Preemptíveis: podem ser retirados sem prejuízo (ex.: memória).
+
+
+Não-preemptíveis: não podem ser tomados sem causar falha (ex.: impressora).
+
+
+Deadlocks geralmente ocorrem em recursos não-preemptíveis.
+
+
+
+🔹 Condições necessárias para deadlock (as 4 condições):
+Exclusão mútua → um recurso só pode ser usado por um processo por vez.
+
+
+Posse e espera → processo mantém recursos enquanto pede outros.
+
+
+Não-preempção → recurso não pode ser retirado à força.
+
+
+Espera circular → cadeia de processos esperando recursos uns dos outros.
+
+
+
+🔹 Modelagem
+Grafos de alocação:
+
+
+Processos = círculos, Recursos = quadrados.
+
+
+Setas mostram recursos possuídos ou requisitados.
+
+
+Ciclos no grafo indicam possível deadlock.
+
+
+
+🔹 Estratégias contra Deadlock
+Ignorar o problema (“algoritmo do avestruz”).
+
+
+Detecção e recuperação: deixa ocorrer, detecta e resolve.
+
+
+Recuperação: preempção, retrocesso (checkpoints), eliminação de processos.
+
+
+Evitar: usar algoritmos para manter o sistema em estado seguro (ex.: Banco do banqueiro).
+
+
+Prevenção: eliminar uma das 4 condições (ex.: ordem global de requisições, pedir todos os recursos de uma vez).
+
+
+
+🔹 Outras questões
+Inanição (starvation): processo pode nunca conseguir recurso (ex.: sempre chegam tarefas menores antes).
+
+
+Solução: políticas justas, como FIFO.
+ Deadlocks – Complemento
+
+🔹 Exemplo de Deadlock
+Dois processos e dois recursos:
+Processo P1 segura Impressora e quer Disco.
+Processo P2 segura Disco e quer Impressora.
+
+Representação em grafo:
+P1 → Disco
+Disco → P2
+P2 → Impressora
+Impressora → P1
+
+ Temos um ciclo fechado → isso é deadlock.
+
+🔹 Exemplo sem Deadlock
+P1 usa Impressora e depois libera.
+P2 só requisita Impressora após P1 liberar.
+
+Grafo:
+P1 → Impressora (usa e libera)
+P2 → Impressora (recebe depois)
+
+ Não há ciclo → logo não há deadlock.
+
+🔹 Como Descobrir se Existe Deadlock
+Modelo de Grafo de Alocação:
+
+
+Processos = círculos, Recursos = quadrados.
+
+
+Se houver um ciclo no grafo → deadlock.
+
+
+Se não houver ciclo → sem deadlock.
+
+
+Algoritmo do Banqueiro (estado seguro):
+
+
+Simula alocação de recursos.
+
+
+Verifica se todos os processos conseguem terminar em alguma ordem.
+
+
+Se não conseguem → sistema em estado inseguro → pode ocorrer deadlock.
+
+
+
+🔹 Estratégias para Evitar Deadlock
+Prevenção (elimina uma das 4 condições):
+
+
+Exclusão mútua → impossível de eliminar.
+
+
+Posse e espera → processos devem requisitar todos os recursos de uma vez.
+
+
+Não-preempção → permitir preempção (retirar recurso à força).
+
+
+Espera circular → impor ordem global de requisições.
+
+
+Evitar (mantém sistema em estado seguro):
+
+
+Ex.: Algoritmo do Banqueiro → concede recursos apenas se não levar a estado inseguro.
+
+
+Detecção e Recuperação:
+
+
+Deixa o deadlock ocorrer, depois detecta (analisando ciclos no grafo).
+
+
+Recupera liberando recursos por:
+
+
+Preempção (tirar recurso de processo).
+
+
+Rollback (voltar a um checkpoint).
+
+
+Matar processos (liberar recursos à força).
+
+
+Ignorar (Ostrich Algorithm):
+
+
+Simplesmente não trata → usado em sistemas onde deadlocks são raros.
+
+
+
+🔹 Resumão das Soluções
+Prevenir → mudar como os recursos são requisitados.
+
+
+Evitar → só concede recursos se for seguro (banqueiro).
+
+
+Detectar e Recuperar → deixa acontecer e resolve depois.
+
+
+Ignorar → não faz nada.
+
+
+ Exemplo Resolvido – Algoritmo do Banqueiro
+Cenário
+Recursos disponíveis (total):
+
+
+A = 10, B = 5, C = 7
+
+
+Matriz de Alocação (Allocation) → quanto cada processo já tem:
+
+
+    A  B  C
+P0   0  1  0
+P1   2  0  0
+P2   3  0  2
+P3   2  1  1
+P4   0  0  2
+
+Matriz de Máxima Necessidade (Max) → quanto cada processo pode precisar no máximo:
+
+
+    A  B  C
+P0   7  5  3
+P1   3  2  2
+P2   9  0  2
+P3   2  2  2
+P4   4  3  3
+
+
+Passo 1: Calcular "Need" (Max - Allocation)
+    A  B  C
+P0   7  4  3
+P1   1  2  2
+P2   6  0  0
+P3   0  1  1
+P4   4  3  1
+
+
+Passo 2: Recursos Disponíveis
+Total – soma da Alocação atual:
+Total = (10, 5, 7)
+Σ Allocation = (7, 2, 5)
+Available = (3, 3, 2)
+
+
+Passo 3: Verificar se existe uma sequência segura
+Work = (3,3,2)
+
+
+P1 precisa (1,2,2) → pode ser atendido 
+
+
+Após terminar, libera recursos de P1: Work = (3+2, 3+0, 2+0) = (5,3,2)
+
+
+Work = (5,3,2)
+
+
+P3 precisa (0,1,1) → pode ser atendido 
+
+
+Libera recursos de P3: Work = (5+2, 3+1, 2+1) = (7,4,3)
+
+
+Work = (7,4,3)
+
+
+P0 precisa (7,4,3) → pode ser atendido 
+
+
+Libera recursos de P0: Work = (7+0, 4+1, 3+0) = (7,5,3)
+
+
+Work = (7,5,3)
+
+
+P2 precisa (6,0,0) → pode ser atendido 
+
+
+Libera recursos de P2: Work = (7+3, 5+0, 3+2) = (10,5,5)
+
+
+Work = (10,5,5)
+
+
+P4 precisa (4,3,1) → pode ser atendido 
+
+
+Libera recursos de P4: Work = (10,5,5) + (0,0,2) = (10,5,7)
+
+
+
+Passo 4: Sequência Segura
+Ordem encontrada:
+P1 → P3 → P0 → P2 → P4
+
+Como existe uma sequência segura, o sistema NÃO está em deadlock.
+
+Resumindo o raciocínio de prova:
+Calcular Need = Max – Allocation.
+
+
+Calcular Available = Total – ΣAllocation.
+
+
+Verificar, com Available, se há processos que podem terminar e liberar recursos.
+
+
+Se todos os processos conseguirem terminar → estado seguro.
+
+
+Se algum ficar preso sem recursos → estado inseguro (possível deadlock).
+
+Exemplo 1 – Sem Deadlock (Estado Seguro)
+Recursos totais
+A = 10, B = 5
+
+Alocação (Allocation)
+    A  B
+P0   5  1
+P1   2  1
+
+Máximo (Max)
+    A  B
+P0   7  3
+P1   4  2
+
+Cálculo
+Need = Max – Allocation
+
+
+    A  B
+P0   2  2
+P1   2  1
+
+Available = Total – ΣAllocation = (10,5) – (7,2) = (3,3)
+
+
+Teste
+Work = (3,3).
+
+
+P0 precisa (2,2) → pode ser atendido  → libera (5,1) → Work = (8,4).
+
+
+P1 precisa (2,1) → pode ser atendido  → libera (2,1) → Work = (10,5).
+
+
+Todos os processos terminam → estado seguro, sem deadlock.
+
+ Exemplo 2 – Com Deadlock (Estado Inseguro)
+Recursos totais
+A = 6, B = 3
+
+Alocação (Allocation)
+    A  B
+P0   3  1
+P1   2  1
+
+Máximo (Max)
+    A  B
+P0   5  2
+P1   3  2
+
+Cálculo
+Need = Max – Allocation
+
+
+    A  B
+P0   2  1
+P1   1  1
+
+Available = Total – ΣAllocation = (6,3) – (5,2) = (1,1)
+
+
+Teste
+Work = (1,1).
+
+
+P0 precisa (2,1) → não pode ser atendido .
+
+
+P1 precisa (1,1) → pode ser atendido  → libera (2,1) → Work = (3,2).
+
+
+Agora Work = (3,2).
+
+
+P0 precisa (2,1) → pode ser atendido  → libera (3,1) → Work = (6,3).
+
+
+Fim → todos terminaram.
+
+
+⚠ Opa! Parece seguro. Vamos ajustar o exemplo para realmente dar deadlock:
+
+ Exemplo 2 Ajustado – Deadlock Real
+Recursos totais
+A = 4, B = 2
+
+Alocação (Allocation)
+    A  B
+P0   2  1
+P1   2  1
+
+Máximo (Max)
+    A  B
+P0   3  2
+P1   3  2
+
+Cálculo
+Need = Max – Allocation
+
+
+    A  B
+P0   1  1
+P1   1  1
+
+Available = Total – ΣAllocation = (4,2) – (4,2) = (0,0)
+
+
+Teste
+Work = (0,0).
+
+
+P0 precisa (1,1) → não pode ser atendido .
+
+
+P1 precisa (1,1) → não pode ser atendido .
+
+
+Nenhum processo pode prosseguir.
+
+
+ Nenhuma sequência segura → deadlock.
+
+Como Identificar Deadlock
+Calcular Need e Available.
+
+
+Tentar achar uma ordem em que processos terminem.
+
+
+Se em algum ponto nenhum processo puder ser atendido, e ainda restarem processos → deadlock.
+
+
+
+ Como Resolver
+Prevenção → eliminar uma das 4 condições (ex.: ordem global, pedir todos os recursos de uma vez).
+
+
+Evitar → usar o Algoritmo do Banqueiro sempre.
+
+
+Detecção e Recuperação:
+
+
+Identificar ciclos no grafo.
+
+
+Preempção (forçar liberação).
+
+
+Rollback (voltar checkpoint).
+
+
+Matar processos.
