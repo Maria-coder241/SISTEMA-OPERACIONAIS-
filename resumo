@@ -1,0 +1,69 @@
+Capítulo 1: Introdução aos Sistemas Operacionais
+O que é um Sistema Operacional (SO)?
+Um Sistema Operacional (SO) é a camada de software fundamental que gerencia os recursos de hardware do computador (processadores, memória, discos, etc.). Ele transforma o hardware complexo em abstrações mais simples e intuitivas, atuando como uma máquina estendida. Além disso, o SO é um gerenciador de recursos, controlando o acesso a eles para que os programas possam ser executados de forma eficiente e segura, utilizando técnicas de multiplexação no tempo (para a CPU) e no espaço (para a memória).
+História dos Sistemas Operacionais
+A evolução dos SOs é dividida em gerações, com marcos importantes:
+Primeira Geração (1945-1955): Computadores a válvulas, sem SO. Programação em linguagem de máquina e configuração manual.
+Segunda Geração (1955-1965): Transistores. Início dos sistemas em lote (batch systems), onde trabalhos eram agrupados e executados em sequência.
+Terceira Geração (1965-1980): Circuitos integrados (CIs) e o advento da multiprogramação, que permitia a execução de múltiplos programas ao mesmo tempo na memória, aumentando a eficiência.
+Quarta Geração (1980-Presente): Computadores pessoais (PCs) e redes. Foco em interfaces gráficas, sistemas distribuídos e otimização para dispositivos móveis.
+
+Capítulo 2: Processos e Threads
+O Modelo de Processo
+Um processo é um programa em execução. Em sistemas de multiprogramação, múltiplos processos se alternam na CPU, mas para o usuário, cada um parece estar rodando de forma independente.
+A criação de processos pode ser acionada por:
+Inicialização do sistema.
+Uma chamada de sistema (syscall) para criação de um novo processo.
+Uma requisição do usuário (ex: iniciar um programa).
+O início de uma nova tarefa em lote.
+O término de um processo ocorre por quatro motivos:
+Saída normal e voluntária (exit).
+Saída por erro voluntário.
+Erro fatal e involuntário (ex: divisão por zero).
+Término por outro processo (involuntário).
+Estados de um Processo
+Um processo pode estar em um dos três estados:
+Em Execução: Usando a CPU.
+Pronto: Aguardando para ser executado.
+Bloqueado: Esperando por algum evento (ex: conclusão de uma operação de I/O).
+As transições entre esses estados são cruciais para o gerenciamento do sistema.
+Threads: O que são e por que são usadas?
+Uma thread é uma unidade de execução dentro de um processo. Enquanto um processo é um ambiente de execução com um único fluxo de controle, um processo multithread possui vários fluxos de controle, ou seja, pode realizar várias tarefas simultaneamente. As threads dentro do mesmo processo compartilham o mesmo espaço de endereçamento, o que as torna leves e eficientes para comunicação. No entanto, o compartilhamento de memória também pode levar a problemas como a condição de corrida, onde o resultado da execução depende da ordem em que as threads acessam os dados compartilhados.
+Escalonamento de Processos e Threads
+O escalonador de processos é a parte do SO responsável por decidir qual processo ou thread deve ser executado na CPU. Os algoritmos podem ser:
+Não-Preemptivos: Um processo é executado até que ele voluntariamente libere a CPU (por terminar, ou por ser bloqueado).
+Preemptivos: A execução do processo pode ser interrompida pelo SO, mesmo que ele não tenha terminado, para que outro processo possa usar a CPU. Isso é comum em sistemas interativos para garantir que todos os processos recebam tempo de CPU.
+Os algoritmos de escalonamento variam de acordo com o ambiente:
+Sistemas em Lote: Foco na alta taxa de processamento. Exemplos incluem Primeiro a Chegar, Primeiro a Ser Servido (First-Come, First-Served) e Tarefa Mais Curta Primeiro (Shortest Job First).
+Sistemas Interativos: Foco em tempos de resposta rápidos. O algoritmo mais comum é o Chaveamento Circular (Round-Robin), onde cada processo recebe um pequeno tempo de CPU (quantum).
+Comunicação entre Processos (IPC)
+A comunicação entre processos pode ser feita via troca de mensagens, usando as primitivas send e receive. Para garantir a confiabilidade, mecanismos como confirmações (acknowledgements) e números de sequência são usados para lidar com mensagens perdidas ou duplicadas.
+Comunicação com Sockets em C
+Sockets são a base da comunicação em rede e local. O código C do servidor usa WSAStartup, socket, bind, listen e accept para aguardar por conexões, enquanto o código do cliente usa connect para iniciar a comunicação. As funções send e recv são usadas para a troca de dados.
+Problemas Clássicos de IPC
+O Problema do Jantar dos Filósofos: Ilustra o deadlock e a inanição em uma situação de espera por recursos compartilhados.
+O Problema dos Leitores e Escritores: Representa uma base de dados compartilhada, mostrando a necessidade de sincronização para permitir múltiplos acessos de leitura e acesso exclusivo para escrita.
+
+Capítulo 4: Sistemas de Arquivos
+Conceitos Essenciais
+Sistemas de arquivos são a base para o armazenamento persistente de informações. Eles garantem que os dados não se percam após a execução de um programa e permitem que múltiplos processos acessem os mesmos dados. O sistema de arquivos gerencia a alocação de blocos no disco, organiza os arquivos e fornece proteção contra acessos indevidos.
+Implementação de Diretórios e Compartilhamento de Arquivos
+Os slides mostram que a implementação de diretórios pode ser feita como uma tabela de hash ou por meio de estruturas como os I-nodes (índice de nós), comuns em sistemas Unix. Cada I-node é uma estrutura de dados que contém metadados sobre o arquivo (atributos, permissões e endereços de blocos no disco) e precisa estar na memória apenas quando o arquivo está em uso.
+Os slides também ilustram como arquivos compartilhados são implementados. Em sistemas com I-nodes, múltiplos diretórios podem apontar para o mesmo I-node, permitindo que diferentes usuários e processos acessem o mesmo arquivo.
+
+Capítulo 6: Deadlocks (Impasses)
+Introdução aos Deadlocks
+Um deadlock é uma situação em que um grupo de processos está bloqueado, pois cada um espera por um recurso que está sendo mantido por outro processo do mesmo grupo. Ele geralmente ocorre com recursos não-preemptíveis (que não podem ser tomados à força).
+As Quatro Condições para Deadlocks
+Para que um deadlock ocorra, todas as quatro condições abaixo devem ser satisfeitas simultaneamente:
+Exclusão Mútua: Cada recurso pode ser usado por apenas um processo por vez.
+Posse e Espera (Hold and Wait): Um processo que já possui um ou mais recursos pode solicitar e esperar por outros.
+Não-Preempção: Os recursos não podem ser tomados de um processo; ele deve liberá-los voluntariamente.
+Espera Circular: Deve existir uma cadeia de processos onde cada processo da cadeia está esperando por um recurso mantido pelo próximo processo.
+Gerenciamento de Deadlocks
+Os slides detalham as principais estratégias para lidar com impasses:
+Algoritmo do Avestruz: Uma abordagem pragmática que ignora o problema. É usada em sistemas onde a probabilidade de um deadlock é muito baixa e o custo para evitá-lo é muito alto.
+Detecção e Recuperação: O sistema detecta a ocorrência de um deadlock e, em seguida, toma medidas para resolvê-lo, como abortar um ou mais processos da cadeia.
+Evitação: O sistema toma decisões de alocação de recursos mais inteligentes para garantir que um estado inseguro (que poderia levar a um deadlock) não seja alcançado. O Algoritmo do Banqueiro é um exemplo clássico.
+Prevenção: Abordagem que quebra uma das quatro condições para o deadlock, garantindo que ele nunca ocorra. Isso pode ser feito permitindo a preempção de recursos, ordenando as requisições de recursos ou eliminando a espera circular.
+
